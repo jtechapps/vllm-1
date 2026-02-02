@@ -92,3 +92,8 @@ def register_vllm_serve_api_routers(app: FastAPI):
     )
 
     attach_server_info_router(app)
+    from vllm.entrypoints.serve.fault_tolerance.api_router import (
+        attach_router as attach_fault_tolerance_router,
+    )
+
+    attach_fault_tolerance_router(app)
