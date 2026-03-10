@@ -4,6 +4,7 @@
 import functools
 import gc
 import itertools
+import os
 import threading
 import time
 from collections import defaultdict
@@ -3284,6 +3285,12 @@ class GPUModelRunner(
             raise RuntimeError(
                 "State error: sample_tokens() must be called "
                 "after execute_model() returns None."
+            )
+
+        if os.getenv('SIMULATE_MODEL_EXECUTE_ERROR') is not None and is_global_first_rank():
+            raise RuntimeError(
+                "Simulated model error on rank 0: SIMULATE_MODEL_EXECUTE_ERROR configured"
+                "in execute_model()."
             )
 
         if self.vllm_config.model_config.enable_return_routed_experts:
