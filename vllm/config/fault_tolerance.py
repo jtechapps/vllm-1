@@ -18,6 +18,11 @@ class FaultToleranceConfig:
     such as scaling down fault DPEngineCore.
     """
 
+    enable_simulate_fault: bool = False
+    """Enable fake fault on rank 0,
+    raises RuntimeError in model execute.
+    """
+
     shutdown_on_fault_tolerance_failure: bool = False
     """Whether to shut down vLLM when a fault tolerance action fails.
     """

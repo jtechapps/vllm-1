@@ -3293,6 +3293,20 @@ class GPUModelRunner(
                 "in execute_model()."
             )
 
+        if os.getenv('SIMULATE_MODEL_EXECUTE_ERROR2') is not None:
+            raise RuntimeError(
+                "Simulated model error on rank 0: SIMULATE_MODEL_EXECUTE_ERROR configured"
+                "in execute_model()."
+            )
+
+        if self.vllm_config.fault_tolerance_config is not None and self.vllm_config.fault_tolerance_config.enable_simulate_fault:
+            logger.info("fault_tolerance_config.enable_simulate_fault")
+            if is_global_first_rank():
+                raise RuntimeError(
+                    "Simulated model error on rank 0: enable_simulate_fault configured"
+                    "in execute_model()."
+                )
+
         if self.vllm_config.model_config.enable_return_routed_experts:
             capturer = RoutedExpertsCapturer.get_instance()
             if capturer is not None:
