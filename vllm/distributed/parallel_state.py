@@ -336,9 +336,8 @@ class GroupCoordinator:
                     seconds=fault_tolerance_config.gloo_comm_timeout
                 )
                 # need to set communicators as nonblocking to abort safely
-                # make blocking for debugging purposes.
-                options.config.blocking = 1
-                os.environ["NCCL_COMM_BLOCKING"] = "1"
+                options.config.blocking = 0
+                os.environ["NCCL_COMM_BLOCKING"] = "0"
 
         for ranks in group_ranks:
             device_group = torch.distributed.new_group(
