@@ -5,6 +5,7 @@ import functools
 import gc
 import itertools
 import os
+import random
 import threading
 import time
 from collections import defaultdict
@@ -3300,8 +3301,9 @@ class GPUModelRunner(
             )
 
         if self.vllm_config.fault_tolerance_config is not None and self.vllm_config.fault_tolerance_config.enable_simulate_fault:
-            logger.info("fault_tolerance_config.enable_simulate_fault")
-            if is_global_first_rank():
+            error_seed = random.randint(1, 10)
+            logger.info("fault_tolerance_config.enable_simulate_fault enabled, number generated: %d", error_seed)
+            if error_seed == 1:
                 raise RuntimeError(
                     "Simulated model error on rank 0: enable_simulate_fault configured"
                     "in execute_model()."
